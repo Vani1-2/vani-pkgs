@@ -1,15 +1,16 @@
 #!/bin/bash
 
 REPO_NAME="vani-pkgs"
-REPO_URL="https://vani1-2.github.io/vani-pkgs"
+# Base URL for the website
+BASE_URL="https://vani1-2.github.io/vani-pkgs"
 ROOT_OUTPUT="index.html"
 RPM_OUTPUT="rpm/index.html"
 DEB_OUTPUT="deb/index.html"
 
-
+# Ensure directories exist
 mkdir -p rpm deb
 
-
+# --- 1. Generate Root Index ---
 cat > $ROOT_OUTPUT <<EOF
 <!DOCTYPE html>
 <html>
@@ -41,7 +42,7 @@ cat > $ROOT_OUTPUT <<EOF
         <p>Fedora / RHEL / CentOS</p>
         <div class="cmd">
             <span class="label"># Install Repo:</span>
-            sudo dnf config-manager --add-repo $REPO_URL/rpm/
+            sudo dnf config-manager --add-repo $BASE_URL/rpm/
         </div>
     </div>
 
@@ -50,10 +51,10 @@ cat > $ROOT_OUTPUT <<EOF
         <p>Debian / Ubuntu / Mint</p>
         <div class="cmd">
             <span class="label"># 1. Add GPG Key:</span>
-curl -s --compressed "$REPO_URL/vani-pkgs.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vani-pkgs.gpg > /dev/null
+curl -s --compressed "$BASE_URL/deb/vani-pkgs.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vani-pkgs.gpg > /dev/null
 
             <br><span class="label"># 2. Add Source:</span>
-echo "deb $REPO_URL/deb ./" | sudo tee /etc/apt/sources.list.d/vani-pkgs.list
+echo "deb $BASE_URL/deb ./" | sudo tee /etc/apt/sources.list.d/vani-pkgs.list
 
             <br><span class="label"># 3. Update:</span>
 sudo apt update
@@ -64,7 +65,7 @@ sudo apt update
 EOF
 echo "Generated Root Index ($ROOT_OUTPUT)"
 
-
+# --- 2. Generate RPM Index ---
 cat > $RPM_OUTPUT <<EOF
 <!DOCTYPE html>
 <html>
@@ -83,7 +84,6 @@ cat > $RPM_OUTPUT <<EOF
     <a href="../" class="back">.. (Go Back)</a>
 EOF
 
-
 for file in rpm/*.rpm; do
     [ -e "$file" ] || continue
     filename=$(basename "$file")
@@ -93,7 +93,7 @@ done
 echo "</body></html>" >> $RPM_OUTPUT
 echo "Generated RPM Index ($RPM_OUTPUT)"
 
-
+# --- 3. Generate DEB Index ---
 cat > $DEB_OUTPUT <<EOF
 <!DOCTYPE html>
 <html>
@@ -111,7 +111,6 @@ cat > $DEB_OUTPUT <<EOF
     <h2>Index of /deb</h2>
     <a href="../" class="back">.. (Go Back)</a>
 EOF
-
 
 for file in deb/*.deb; do
     [ -e "$file" ] || continue
