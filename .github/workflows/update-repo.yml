@@ -1,0 +1,49 @@
+name: Update APT Repo
+
+on:
+  push:
+    paths:
+      - 'deb/*.deb' # Only runs when you add a deb file
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install APT Repo Tools
+        run: sudo apt-get install -y dpkg-dev apt-utils
+
+      - name: Import GPG Key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --import --batch --yes
+          # Configure GPG to use the passphrase automatically if needed
+          echo "allow-loopback-pinentry" > ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback" > ~/.gnupg/gpg.conf
+
+      - name: Generate Metadata & Sign
+        run: |
+          cd deb
+          # Generate Packages
+          dpkg-scanpackages --multiversion . > Packages
+          gzip -k -f Packages
+          # Generate Release
+          apt-ftparchive release . > Release
+          # Sign
+          rm -f Release.gpg InRelease
+          echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --default-key "giovannirafanan609@gmail.com" -abs -o - Release > Release.gpg
+          echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --default-key "giovannirafanan609@gmail.com" --clearsign -o - Release > InRelease
+
+      - name: Update HTML Index
+        run: chmod +x gen-index.sh && ./gen-index.sh
+
+      - name: Commit & Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update repo metadata and signatures"
+          file_pattern: 'deb/Packages* deb/Release* deb/InRelease *.html */index.html'
