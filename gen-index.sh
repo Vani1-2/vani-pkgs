@@ -1,12 +1,12 @@
 #!/bin/bash
 
-
 REPO_NAME="vani-pkgs"
 REPO_URL="https://vani1-2.github.io/vani-pkgs" 
 ROOT_OUTPUT="index.html"
 RPM_OUTPUT="rpm/index.html"
+DEB_OUTPUT="deb/index.html"
 
-
+# --- 1. Generate Root Index ---
 cat > $ROOT_OUTPUT <<EOF
 <!DOCTYPE html>
 <html>
@@ -44,14 +44,18 @@ cat > $ROOT_OUTPUT <<EOF
 
     <div class="card">
         <a href="deb/">📂 DEB Repository</a>
-        <p>Debian / Ubuntu (Coming Soon)</p>
+        <p>Debian / Ubuntu / Mint</p>
+        <div class="cmd">
+            <span class="label"># Install Repo:</span>
+            echo "deb [trusted=yes] $REPO_URL/deb ./" | sudo tee /etc/apt/sources.list.d/vani-pkgs.list
+        </div>
     </div>
 </body>
 </html>
 EOF
 echo "Generated Root Index ($ROOT_OUTPUT)"
 
-
+# --- 2. Generate RPM Index ---
 cat > $RPM_OUTPUT <<EOF
 <!DOCTYPE html>
 <html>
@@ -70,7 +74,6 @@ cat > $RPM_OUTPUT <<EOF
     <a href="../" class="back">.. (Go Back)</a>
 EOF
 
-
 for file in $(ls -1 rpm/*.rpm 2>/dev/null); do
     filename=$(basename "$file")
     echo "    <a href=\"$filename\">$filename</a>" >> $RPM_OUTPUT
@@ -78,3 +81,30 @@ done
 
 echo "</body></html>" >> $RPM_OUTPUT
 echo "Generated RPM Index ($RPM_OUTPUT)"
+
+# --- 3. Generate DEB Index ---
+cat > $DEB_OUTPUT <<EOF
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index of /deb</title>
+    <style>
+        body { font-family: monospace; background: #1a1a1a; color: #c5c8c6; padding: 20px; }
+        a { color: #81a2be; text-decoration: none; display: block; margin: 5px 0; }
+        a:hover { text-decoration: underline; color: #b5bd68; }
+        h2 { border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .back { margin-bottom: 20px; display: block; color: #b294bb; }
+    </style>
+</head>
+<body>
+    <h2>Index of /deb</h2>
+    <a href="../" class="back">.. (Go Back)</a>
+EOF
+
+for file in $(ls -1 deb/*.deb 2>/dev/null); do
+    filename=$(basename "$file")
+    echo "    <a href=\"$filename\">$filename</a>" >> $DEB_OUTPUT
+done
+
+echo "</body></html>" >> $DEB_OUTPUT
+echo "Generated DEB Index ($DEB_OUTPUT)"
