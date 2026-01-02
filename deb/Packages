@@ -17,7 +17,7 @@ Version: 0.1.5-1
 Architecture: amd64
 Maintainer: Vani1-2 <giovannirafanan609@gmail.com>
 Depends: libgtk-4-1, libglib2.0-0, libadwaita-1-0
-Filename: ./memerist_0.1.5-1_amd64.deb
+Filename: ./memerist-amd64.deb
 Size: 745854
 MD5sum: ee08f3f23106306c3685b1b4f42b63c7
 SHA1: 9ad06c10ea97f6fbe69557e979ef11a915eb2bf6
