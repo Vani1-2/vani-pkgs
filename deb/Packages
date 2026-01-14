@@ -4,10 +4,10 @@ Architecture: amd64
 Maintainer: Vani1-2 <giovannirafanan609@gmail.com>
 Depends: libncurses6, libncursesw6
 Filename: ./kaczynski-amd64.deb
-Size: 23372
-MD5sum: 1ebe28dc7fa46a02a7ce35be31510f35
-SHA1: 2d2abef3103b028a38e1520a6810e700a275a626
-SHA256: 52b0af5d06961f0c2461e0737461e8188e8c37ebd80b7d3c2bc6610d7ea83525
+Size: 47644
+MD5sum: 32de43c08a315e962b4f2eeb25f0d4d9
+SHA1: 5bcb5062d2da80f0b90f56c831cb603be5b610e4
+SHA256: aa0aca2388655194644be828cc9a0828ed44a5435e5d8216c9b8bbf3d8d2f949
 Section: utils
 Priority: optional
 Description: Text editor made by Limitless Trolling
