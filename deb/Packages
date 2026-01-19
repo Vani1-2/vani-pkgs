@@ -13,15 +13,15 @@ Priority: optional
 Description: Text editor made by Limitless Trolling
 
 Package: memerist
-Version: 0.2.3-1
+Version: 0.2.4-1
 Architecture: amd64
 Maintainer: Vani1-2 <giovannirafanan609@gmail.com>
 Depends: libgtk-4-1, libglib2.0-0, libadwaita-1-0
 Filename: ./memerist-amd64.deb
-Size: 949656
-MD5sum: f387db4455fbd2889353ede72682fdb3
-SHA1: 9994514e272392234a72ff46a035f6dc987e364e
-SHA256: 42f2cd2ba8d291744a8e2849e1e87ec6898c67e1d430c056139a7aae3f43ac22
+Size: 1059378
+MD5sum: a719646a1795905e872a42fa96f0d3b8
+SHA1: 0a56aa47e7e92a30cb01c6afd113697a3feea4b6
+SHA256: 6ae064c943bd11487d724beba3a6f37688c58ff58b05aa96a9e0985cb3bd3e41
 Section: utils
 Priority: optional
 Description: Meme editor for the GNOME Desktop
